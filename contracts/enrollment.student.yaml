@@ -1,0 +1,21 @@
+fqtn: enrollment.student
+owner: registrar
+fields:
+  student_id:
+    required: true
+    rule: "^\\d{8}$"
+  last_name:
+    required: true
+  first_name:
+    required: true
+  email:
+    required: true
+    rule: "^[^@]+@[^@]+$"
+  gpa:
+    required: false
+    type: number
+  is_active:
+    required: false
+    type: boolean
+primary_key: student_id
+events: [validate, lookup, mutate, notify]

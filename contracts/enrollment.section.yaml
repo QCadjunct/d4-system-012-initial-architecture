@@ -1,0 +1,21 @@
+fqtn: enrollment.section
+owner: registrar
+fields:
+  section_id:
+    required: true
+    rule: "^[A-Z]{4}\\d{3}-\\d{2}$"
+  course_name:
+    required: true
+  instructor:
+    required: true
+  capacity:
+    required: true
+    type: integer
+  enrolled_count:
+    required: false
+    type: integer
+  semester:
+    required: true
+    rule: "^(Fall|Spring|Summer)\\d{4}$"
+primary_key: section_id
+events: [validate, lookup, mutate, notify]

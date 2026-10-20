@@ -1,0 +1,30 @@
+[project]
+name = "d4-poc"
+version = "0.1.0"
+description = "D⁴ (Domain-Driven Database Design) System 0/1/2 — Proof of Concept"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+pg = ["psycopg[binary]>=3.1"]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+d4-demo = "main:main"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0",
+]
+
+[tool.uv.scripts]
+demo = "python main.py"
+demo-pg = "python main.py --pg 'host=localhost dbname=d4_poc'"
+test = "python -m pytest tests/ -v"
+ddl = "python -c 'from d4.system0 import load_system0; from d4.pg.ddl import env_to_ddl; print(env_to_ddl(load_system0(\"contracts\")))'"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

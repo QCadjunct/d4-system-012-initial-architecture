@@ -1,0 +1,19 @@
+fqtn: enrollment.registration
+owner: registrar
+fields:
+  registration_id:
+    required: true
+    rule: "^REG-\\d{10}$"
+  student_id:
+    required: true
+    rule: "^\\d{8}$"
+  section_id:
+    required: true
+    rule: "^[A-Z]{4}\\d{3}-\\d{2}$"
+  registered_at:
+    required: true
+  status:
+    required: true
+    rule: "^(enrolled|dropped|waitlisted)$"
+primary_key: registration_id
+events: [validate, lookup, mutate, notify]

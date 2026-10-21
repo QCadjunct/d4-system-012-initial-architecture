@@ -2,7 +2,7 @@
 name = "d4-poc"
 version = "0.1.0"
 description = "D⁴ (Domain-Driven Database Design) System 0/1/2 — Proof of Concept"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 dependencies = [
     "pydantic>=2.0",
     "pyyaml>=6.0",

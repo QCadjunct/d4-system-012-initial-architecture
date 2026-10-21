@@ -2,20 +2,44 @@ fqtn: enrollment.section
 owner: registrar
 fields:
   section_id:
+    fqdn: enrollment.SectionIdentifier
     required: true
+    default_name: DF_Enrollment_Section_SectionId
+    default_value: "XXXX000-00"
+    check_constraint_name: colCHK_Enrollment_Section_SectionId
     rule: "^[A-Z]{4}\\d{3}-\\d{2}$"
   course_name:
+    fqdn: enrollment.CourseName
     required: true
+    default_name: DF_Enrollment_Section_CourseName
+    default_value: "CourseName_UNKNOWN"
   instructor:
+    fqdn: enrollment.InstructorName
     required: true
+    default_name: DF_Enrollment_Section_Instructor
+    default_value: "Instructor_UNASSIGNED"
   capacity:
+    fqdn: enrollment.SectionCapacity
     required: true
     type: integer
+    default_name: DF_Enrollment_Section_Capacity
+    default_value: 0
+    check_constraint_name: colCHK_Enrollment_Section_Capacity
+    rule: "capacity >= 0"
   enrolled_count:
+    fqdn: enrollment.EnrolledCount
     required: false
     type: integer
+    default_name: DF_Enrollment_Section_EnrolledCount
+    default_value: 0
+    check_constraint_name: colCHK_Enrollment_Section_EnrolledCount
+    rule: "enrolled_count >= 0"
   semester:
+    fqdn: enrollment.AcademicSemester
     required: true
+    default_name: DF_Enrollment_Section_Semester
+    default_value: "Fall0000"
+    check_constraint_name: colCHK_Enrollment_Section_Semester
     rule: "^(Fall|Spring|Summer)\\d{4}$"
 primary_key: section_id
-events: [validate, lookup, mutate, notify]
+events: [validate, lookup, mutate, notify, data_quality]

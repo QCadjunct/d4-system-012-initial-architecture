@@ -45,10 +45,23 @@ class EventType(StrEnum):
 # ---------------------------------------------------------------------------
 
 class FieldDeclaration(BaseModel):
-    """A single field declaration within an FQTN contract."""
+    """
+    A single field declaration within an FQTN contract.
+
+    Every field carries the governed column quintuplet:
+      1. fqdn              — Fully Qualified Domain Name (domain type)
+      2. default_name       — named DEFAULT constraint (DF_{Schema}_{Table}_{Column})
+      3. default_value      — declared absence value (replaces NULL)
+      4. check_constraint_name — named CHECK constraint (colCHK_{Schema}_{Table}_{Column})
+      5. rule               — validation rule (regex pattern or expression)
+    """
+    fqdn: Optional[str] = None
     required: bool = False
-    rule: Optional[str] = None
     type: str = "string"     # string | number | integer | boolean
+    default_name: Optional[str] = None
+    default_value: Any = None
+    check_constraint_name: Optional[str] = None
+    rule: Optional[str] = None
 
 
 # ---------------------------------------------------------------------------
@@ -129,8 +142,15 @@ class FQTNContract(BaseModel):
             py_type = type_map.get(fdecl.type, str)
             kwargs: dict[str, Any] = {}
 
-            if fdecl.rule:
+            if fdecl.rule and py_type is str:
                 kwargs["pattern"] = fdecl.rule
+            elif fdecl.rule and py_type in (float, int):
+                # Parse numeric rules like "gpa >= 0.00 AND gpa <= 4.00"
+                import re as _re
+                for m in _re.finditer(r'>=\s*([\d.]+)', fdecl.rule):
+                    kwargs["ge"] = py_type(m.group(1))
+                for m in _re.finditer(r'<=\s*([\d.]+)', fdecl.rule):
+                    kwargs["le"] = py_type(m.group(1))
 
             if fdecl.required:
                 field_definitions[fname] = (py_type, Field(**kwargs))

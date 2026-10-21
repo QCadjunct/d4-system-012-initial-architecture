@@ -2,20 +2,42 @@ fqtn: enrollment.student
 owner: registrar
 fields:
   student_id:
+    fqdn: enrollment.StudentIdentifier
     required: true
+    default_name: DF_Enrollment_Student_StudentId
+    default_value: "00000000"
+    check_constraint_name: colCHK_Enrollment_Student_StudentId
     rule: "^\\d{8}$"
   last_name:
+    fqdn: enrollment.PersonLastName
     required: true
+    default_name: DF_Enrollment_Student_LastName
+    default_value: "LastName_UNKNOWN"
   first_name:
+    fqdn: enrollment.PersonFirstName
     required: true
+    default_name: DF_Enrollment_Student_FirstName
+    default_value: "FirstName_UNKNOWN"
   email:
+    fqdn: enrollment.EmailAddress
     required: true
+    default_name: DF_Enrollment_Student_Email
+    default_value: "unknown@placeholder.invalid"
+    check_constraint_name: colCHK_Enrollment_Student_Email
     rule: "^[^@]+@[^@]+$"
   gpa:
+    fqdn: enrollment.GradePointAverage
     required: false
     type: number
+    default_name: DF_Enrollment_Student_Gpa
+    default_value: 0.00
+    check_constraint_name: colCHK_Enrollment_Student_Gpa
+    rule: "gpa >= 0.00 AND gpa <= 4.00"
   is_active:
+    fqdn: enrollment.IsActive
     required: false
     type: boolean
+    default_name: DF_Enrollment_Student_IsActive
+    default_value: false
 primary_key: student_id
-events: [validate, lookup, mutate, notify]
+events: [validate, lookup, mutate, notify, data_quality]

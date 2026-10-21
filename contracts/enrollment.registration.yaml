@@ -2,18 +2,37 @@ fqtn: enrollment.registration
 owner: registrar
 fields:
   registration_id:
+    fqdn: enrollment.RegistrationIdentifier
     required: true
+    default_name: DF_Enrollment_Registration_RegistrationId
+    default_value: "REG-0000000000"
+    check_constraint_name: colCHK_Enrollment_Registration_RegistrationId
     rule: "^REG-\\d{10}$"
   student_id:
+    fqdn: enrollment.StudentIdentifier
     required: true
+    default_name: DF_Enrollment_Registration_StudentId
+    default_value: "00000000"
+    check_constraint_name: colCHK_Enrollment_Registration_StudentId
     rule: "^\\d{8}$"
   section_id:
+    fqdn: enrollment.SectionIdentifier
     required: true
+    default_name: DF_Enrollment_Registration_SectionId
+    default_value: "XXXX000-00"
+    check_constraint_name: colCHK_Enrollment_Registration_SectionId
     rule: "^[A-Z]{4}\\d{3}-\\d{2}$"
   registered_at:
+    fqdn: enrollment.RegistrationTimestamp
     required: true
+    default_name: DF_Enrollment_Registration_RegisteredAt
+    default_value: "1900-01-01T00:00:00"
   status:
+    fqdn: enrollment.RegistrationStatus
     required: true
+    default_name: DF_Enrollment_Registration_Status
+    default_value: "enrolled"
+    check_constraint_name: colCHK_Enrollment_Registration_Status
     rule: "^(enrolled|dropped|waitlisted)$"
 primary_key: registration_id
-events: [validate, lookup, mutate, notify]
+events: [validate, lookup, mutate, notify, data_quality]
